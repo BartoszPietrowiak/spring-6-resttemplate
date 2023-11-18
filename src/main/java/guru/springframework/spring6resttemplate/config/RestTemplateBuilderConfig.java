@@ -12,10 +12,11 @@ public class RestTemplateBuilderConfig {
 
     @Bean
     RestTemplateBuilder restTemplateBuilder(RestTemplateBuilderConfigurer restTemplateBuilderConfigurer,
-                                            @Value("${rest.template.rootUrl}") String rootUrl) {
-        RestTemplateBuilder builder = restTemplateBuilderConfigurer.configure(new RestTemplateBuilder());
-        DefaultUriBuilderFactory uriBuilderFactory = new DefaultUriBuilderFactory(rootUrl);
-
-        return builder.uriTemplateHandler(uriBuilderFactory);
+                                            @Value("${rest.template.rootUrl}") String rootUrl,
+                                            @Value("${rest.template.user}") String user,
+                                            @Value("${rest.template.password}") String password) {
+        return restTemplateBuilderConfigurer.configure(new RestTemplateBuilder())
+                .uriTemplateHandler(new DefaultUriBuilderFactory(rootUrl))
+                .basicAuthentication(user, password);
     }
 }
